@@ -1,0 +1,56 @@
+<div class="bg-cream text-charcoal min-h-screen font-sans leading-normal overflow-x-hidden lg:overflow-auto">
+    <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
+        <section class="bg-cream-lighter p-4 shadow">
+            <div class="md:flex">
+                <h2 class="md:w-1/3 uppercase tracking-wide text-sm sm:text-lg mb-6">Agregar Dueño</h2>
+            </div>
+            <form (ngSubmit)="actualizar()">
+                <div class="md:flex mb-8">
+                    <div class="md:w-1/3">
+                        <legend class="uppercase tracking-wide text-sm">Ubicacion / Informacion</legend>
+                        <p class="text-xs font-light text-red">Seccion requerida.</p>
+                    </div>
+                    <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+                        <div class="mb-4">
+                            <label class="block uppercase tracking-wide text-xs font-bold">Nombre</label>
+                            <input class="w-full shadow-inner p-4 border-0" type="text" name="nombre"
+                                [(ngModel)]="dueno.nombre" placeholder="Nombre y Apellidos">
+                        </div>
+                        <div class="md:flex mb-4">
+                            <div class="md:flex-1 md:pr-3">
+                                <label
+                                    class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Direccion</label>
+                                <input class="w-full shadow-inner p-4 border-0" type="text" name="direccion"
+                                    [(ngModel)]="dueno.direccion"
+                                    placeholder="Av Example">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="md:flex mb-8">
+                    <div class="md:w-1/3">
+                        <legend class="uppercase tracking-wide text-sm">Contacto</legend>
+                    </div>
+                    <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+                        <div class="mb-4">
+                            <label class="block uppercase tracking-wide text-xs font-bold">Telefono</label>
+                            <input class="w-full shadow-inner p-4 border-0" type="tel" name="telefono"
+                                [(ngModel)]="dueno.telefono"
+                                placeholder="(+51) 555-5555">
+                        </div>
+                    </div>
+                </div>
+                <div class="md:flex mb-6 border border-t-1 border-b-0 border-x-0 border-cream-dark">
+                    <div class="md:flex-1 px-3 text-center md:text-right">
+                      <input
+                        class="button text-cream-lighter bg-brick hover:bg-brick-dark cursor-pointer hover:bg-gray-500 text-white p-3 rounded-md my-1.5 bg-gray-700"
+                        type="submit"
+                        value="actualizar Dueño"
+                      />
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>

@@ -1,0 +1,53 @@
+<div id="body" class="bg-slate-50 h-screen flex">
+    <nav class="bg-green-100 w-80 h-screen flex flex-col gap-10 border-r border-slate-100">
+        <div class="logo text-2xl font-bold text-center h-16 flex items-center justify-center">Veterinaria</div>
+        <div class="user flex items-center justify-center flex-col gap-4 border-b border-emerald-slate-50 py-4">
+            <img class="w-24 rounded-full shadow-xl" width="340" height="946" src="user.png">
+            <div class="flex flex-col items-center">
+                <span class="font-semibold text-lg text-emerald-700">{{username}}</span>
+                <span class="text-slate-400 text-sm">{{rol}}</span>
+            </div>
+            <div class="text-sm text-slate-400">
+                <span class="font-semibold text-slate-500"> servicios </span> (20)
+            </div>
+        </div>
+
+        <ul class="px-6 space-y-2">
+            <li>
+                <a class="block px-4 py-2.5 text-slate-800 font-semibold  hover:bg-emerald-950 hover:text-white rounded-lg" routerLink="mascota" routerLinkActive="bg-emerald-950 text-white">Mascotas</a>
+            </li>
+            <li>
+                <a class="block px-4 py-2.5 text-slate-800 font-semibold hover:bg-emerald-950 hover:text-white rounded-lg" routerLink="factura" routerLinkActive="bg-emerald-950 text-white">Facturas</a>
+
+            </li>
+            <li>
+                <a class="block px-4 py-2.5 text-slate-800 font-semibold hover:bg-emerald-950 hover:text-white rounded-lg" routerLink="dueno" routerLinkActive="bg-emerald-950 text-white">Dueños</a>
+            </li>
+            <li>
+                <a class="block px-4 py-2.5 text-slate-800 font-semibold hover:bg-emerald-950 hover:text-white rounded-lg" routerLink="home" routerLinkActive="bg-emerald-950 text-white">Home</a>
+            </li>
+            <li>
+                <a class="block px-4 py-2.5 text-slate-800 font-semibold hover:bg-emerald-950 hover:text-white rounded-lg" routerLink="servicio" routerLinkActive="bg-emerald-950 text-white">Servicios</a>                
+            </li>
+        </ul>
+        <ul class="px-6 space-y-2">
+            <li>
+                <button (click)="logout()" class="block px-4 py-2.5 bg-red-600 rounded-lg text-white cursor-pointer hover:bg-red-400 w-full">Cerrar Sesion</button>
+            </li>
+        </ul>
+    </nav>
+    <div class="right w-full flex gap-2 flex-col">
+        <header class="h-16 w-full flex items-center p-4 text-slate-400">
+            <ol class=" text-slate-400 flex flex-wrap gap-1 text-sm [&>li:last-child]:font-semibold [&>li:not(:first-child)]:before:content-['\00bb']">
+                <li class="before:content-['\2616'] before:mx-2"><a routerLink="home">Home</a></li>
+                <li class="before:mx-2"><a routerLink="dueno">Dueños</a></li>
+            </ol>
+        </header>
+        
+        <div class="p-3">
+            
+            <router-outlet></router-outlet>
+            
+        </div>
+    </div>
+<div>

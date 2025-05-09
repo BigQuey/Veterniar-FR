@@ -1,0 +1,58 @@
+<button class="bg-emerald-500 text-white px-4 py-1 rounded-lg cursor-pointer mb-1" routerLink="crear">Agregar</button>
+<table class="w-full text-left table-auto min-w-max">
+    <thead>
+        <tr>
+            <th class="p-4 border-b border-slate-600 bg-slate-700">
+                <p class="text-sm font-normal leading-none text-slate-300">
+                    ID
+                </p>
+            </th>
+            <th class="p-4 border-b border-slate-600 bg-slate-700">
+                <p class="text-sm font-normal leading-none text-slate-300">
+                    Nombre
+                </p>
+            </th>
+            <th class="p-4 border-b border-slate-600 bg-slate-700">
+                <p class="text-sm font-normal leading-none text-slate-300">
+                    Especie
+                </p>
+            </th>
+            <th class="p-4 border-b border-slate-600 bg-slate-700">
+                <p class="text-sm font-normal leading-none text-slate-300">
+                    Raza
+                </p>
+            </th>
+            <th class="p-4 border-b border-slate-600 bg-slate-700">
+                <p class="text-sm font-normal leading-none text-slate-300">
+                    Dueño
+                </p>
+            </th>
+            <th class="p-4 border-b border-slate-600 bg-slate-700">
+                <p class="text-sm font-normal leading-none text-slate-300">
+                    Acciones
+                </p>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let mascota of mascota" class="hover:bg-slate-100">
+            <td>{{mascota.id}}</td>
+            <td>{{mascota.nombre}}</td>
+            <td>{{mascota.especie}}</td>
+            <td>{{mascota.raza}}</td>
+            <td>{{mascota.dueno?.nombre }}</td>
+            <td class="flex gap-2">
+                <button class="bg-emerald-500 text-white px-4 py-1 rounded-lg"
+                    [routerLink]="['/dashboard/mascota/editar', mascota.id!]">Editar</button>
+                <!-- <ng-container *ngIf="mascota.id !== undefined"> -->
+                <button class="bg-red-500 text-white px-4 py-1 rounded-lg cursor-pointer"
+                    (click)="eliminar(mascota.id)">Eliminar</button>
+                <!-- </ng-container> -->
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div *ngIf="mensajeExito" class="bg-green-100 text-green-800 px-4 py-2 mb-4 rounded">
+    {{ mensajeExito }}
+</div>

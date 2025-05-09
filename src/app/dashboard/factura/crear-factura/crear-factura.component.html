@@ -1,0 +1,136 @@
+<form (ngSubmit)="guardarFactura()">
+  <div class="md:flex mb-8">
+    <div class="md:w-1/3">
+      <legend class="uppercase tracking-wide text-sm">
+        Información de la Factura
+      </legend>
+      <p class="text-xs font-light text-red">Sección requerida.</p>
+    </div>
+    <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+      <div class="mb-4">
+        <label class="block uppercase tracking-wide text-xs font-bold"
+          >Fecha</label
+        >
+        <input
+          class="w-full shadow-inner p-4 border-0"
+          type="date"
+          name="fecha"
+          [(ngModel)]="factura.fecha"
+          placeholder="Selecciona la fecha"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block uppercase tracking-wide text-xs font-bold"
+          >Dueño</label
+        >
+        <select
+          class="w-full shadow-inner p-4 border-0"
+          name="dueno"
+          [(ngModel)]="factura.dueno"
+        >
+          <option [ngValue]="undefined" disabled>Selecciona un dueño</option>
+          <option *ngFor="let dueno of duenosDisponibles" [ngValue]="dueno">
+            {{ dueno.nombre }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección para agregar los detalles de la factura -->
+  <div class="md:flex mb-8">
+    <div class="md:w-1/3">
+      <legend class="uppercase tracking-wide text-sm">
+        Detalles de la Factura
+      </legend>
+    </div>
+    <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+      <div class="mb-4">
+        <table class="w-full table-auto">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 border">Servicio</th>
+              <th class="px-4 py-2 border">Cantidad</th>
+              <th class="px-4 py-2 border">Subtotal</th>
+              <th class="px-4 py-2 border">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detalle of factura.detalles; let i = index">
+              <td>
+                <select
+                  class="w-full shadow-inner p-4 border-0"
+                  name="servicio-{{ i }}"
+                  [(ngModel)]="detalle.servicio"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="calcularSubtotal(i)"
+                >
+                  <option [ngValue]="undefined" disabled>Selecciona un servicio</option>
+                  <option
+                    *ngFor="let servicio of serviciosDisponibles"
+                    [ngValue]="servicio"
+                  >
+                    {{ servicio.nombre }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  class="w-full shadow-inner p-4 border-0"
+                  type="number"
+                  name="cantidad-{{ i }}"
+                  [(ngModel)]="detalle.cantidad"
+                  [ngModelOptions]="{ standalone: true }"
+                  (input)="calcularSubtotal(i)"
+                  placeholder="Cantidad"
+                />
+              </td>
+              <td>
+                <!-- Subtotal calculado automáticamente -->
+                <input
+                  class="w-full shadow-inner p-4 border-0"
+                  type="number"
+                  name="subtotal-{{ i }}"
+                  [value]="detalle.subtotal"
+                  readonly
+                  placeholder="Subtotal"
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="bg-red-500 text-white px-2 py-1 rounded-lg"
+                  (click)="eliminarDetalle(i)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mb-4">
+        <button
+          class="bg-emerald-500 text-white px-4 py-1 rounded-lg"
+          type="button"
+          (click)="agregarDetalle()"
+        >
+          Agregar Detalle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón para guardar la factura -->
+  <div
+    class="md:flex mb-6 border border-t-1 border-b-0 border-x-0 border-cream-dark"
+  >
+    <div class="md:flex-1 px-3 text-center md:text-right">
+      <input
+        class="button text-cream-lighter bg-brick hover:bg-brick-dark cursor-pointer"
+        type="submit"
+        value="Guardar Factura"
+      />
+    </div>
+  </div>
+</form>
