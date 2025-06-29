@@ -1,4 +1,4 @@
-<form (ngSubmit)="guardarFactura()">
+<form (ngSubmit)="guardarFactura()" class="p-6 bg-white shadow-md rounded-lg">
   <div class="md:flex mb-8">
     <div class="md:w-1/3">
       <legend class="uppercase tracking-wide text-sm">
@@ -20,10 +20,11 @@
         />
       </div>
       <div class="mb-4">
-        <label class="block uppercase tracking-wide text-xs font-bold"
+        <label class="block uppercase tracking-wide text-xs font-bold" for="dueno"
           >Dueño</label
         >
         <select
+          id="dueno"
           class="w-full shadow-inner p-4 border-0"
           name="dueno"
           [(ngModel)]="factura.dueno"
@@ -40,32 +41,47 @@
   <!-- Sección para agregar los detalles de la factura -->
   <div class="md:flex mb-8">
     <div class="md:w-1/3">
-      <legend class="uppercase tracking-wide text-sm">
-        Detalles de la Factura
-      </legend>
+      <legend class="uppercase tracking-wide text-sm">Agregar Servicios</legend>
     </div>
     <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-      <div class="mb-4">
-        <table class="w-full table-auto">
+      <div
+        class="relative flex flex-col w-full max-h-96 overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border"
+      >
+        <table class="w-full text-left table-auto min-w-max">
           <thead>
-            <tr>
-              <th class="px-4 py-2 border">Servicio</th>
-              <th class="px-4 py-2 border">Cantidad</th>
-              <th class="px-4 py-2 border">Subtotal</th>
-              <th class="px-4 py-2 border">Acción</th>
+            <!-- 6 columnas anteriormente -->
+            <tr class="border-b border-slate-300 bg-slate-50">
+              
+              <th class="p-4 text-sm font-normal leading-none text-slate-500">
+                Servicio
+              </th>
+              <th class="p-4 text-sm font-normal leading-none text-slate-500">
+                Cantidad
+              </th>
+              <th class="p-4 text-sm font-normal leading-none text-slate-500">
+                SubTotal
+              </th>
+              <th class="p-4 text-sm font-normal leading-none text-slate-500">
+                Accion
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let detalle of factura.detalles; let i = index">
-              <td>
+            <tr
+              class="hover:bg-slate-50"
+              *ngFor="let detalle of factura.detalles; let i = index"
+            >
+              <td class="p-4 border-b border-slate-200 py-5">
                 <select
                   class="w-full shadow-inner p-4 border-0"
                   name="servicio-{{ i }}"
                   [(ngModel)]="detalle.servicio"
-                  [ngModelOptions]="{ standalone: true }"
+                  
                   (change)="calcularSubtotal(i)"
                 >
-                  <option [ngValue]="undefined" disabled>Selecciona un servicio</option>
+                  <option [ngValue]="null" disabled selected>
+                    Selecciona un servicio
+                  </option>
                   <option
                     *ngFor="let servicio of serviciosDisponibles"
                     [ngValue]="servicio"
@@ -74,29 +90,28 @@
                   </option>
                 </select>
               </td>
-              <td>
+              <td class="p-4 border-b border-slate-200">
                 <input
                   class="w-full shadow-inner p-4 border-0"
                   type="number"
                   name="cantidad-{{ i }}"
                   [(ngModel)]="detalle.cantidad"
-                  [ngModelOptions]="{ standalone: true }"
+                  
                   (input)="calcularSubtotal(i)"
                   placeholder="Cantidad"
                 />
               </td>
-              <td>
-                <!-- Subtotal calculado automáticamente -->
+              <td class="p-4 border-b border-slate-200">
                 <input
                   class="w-full shadow-inner p-4 border-0"
                   type="number"
                   name="subtotal-{{ i }}"
-                  [value]="detalle.subtotal"
+                  [(ngModel)]="detalle.subtotal"
                   readonly
                   placeholder="Subtotal"
                 />
               </td>
-              <td>
+              <td class="p-4 border-b border-slate-200">
                 <button
                   type="button"
                   class="bg-red-500 text-white px-2 py-1 rounded-lg"
@@ -111,7 +126,7 @@
       </div>
       <div class="mb-4">
         <button
-          class="bg-emerald-500 text-white px-4 py-1 rounded-lg"
+          class="bg-emerald-500 text-white px-4 py-2 rounded-lg"
           type="button"
           (click)="agregarDetalle()"
         >
@@ -123,11 +138,12 @@
 
   <!-- Botón para guardar la factura -->
   <div
-    class="md:flex mb-6 border border-t-1 border-b-0 border-x-0 border-cream-dark"
+    class="md:flex mb-6 border border-t-1 border-b-0 border-x-0 border-cream-dark "
   >
     <div class="md:flex-1 px-3 text-center md:text-right">
       <input
-        class="button text-cream-lighter bg-brick hover:bg-brick-dark cursor-pointer"
+        class="button mt-3 p-3 text-cream-lighter bg-brick hover:bg-brick-dark cursor-pointer rounded-md
+        text-white bg-gray-600 transition-all duration-300 ease-in-out"
         type="submit"
         value="Guardar Factura"
       />

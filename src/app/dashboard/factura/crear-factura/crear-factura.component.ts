@@ -20,7 +20,7 @@ export class CrearFacturaComponent {
     fecha: '',
     dueno: undefined,
     detalles: [] as {
-      servicio: Servicio;
+      servicio: Servicio | null;
       cantidad: number;
       subtotal: number;
     }[],
@@ -56,7 +56,7 @@ export class CrearFacturaComponent {
 
   agregarDetalle() {
     this.factura.detalles?.push({
-      servicio: {} as Servicio,
+      servicio: null,
       cantidad: 1,
       subtotal: 0,
     });

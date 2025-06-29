@@ -12,7 +12,7 @@
       <th class="p-4 border-b border-slate-600 bg-slate-700">
         <p class="text-sm font-normal leading-none text-slate-300">Precio</p>
       </th>
-      <th class="p-4 border-b border-slate-600 bg-slate-700">
+      <th class="p-4 border-b border-slate-600 bg-slate-700 text-center">
         <p class="text-sm font-normal leading-none text-slate-300">Acciones</p>
       </th>
     </tr>
@@ -22,15 +22,15 @@
       <td>{{ servicio.id }}</td>
       <td>{{ servicio.nombre }}</td>
       <td>S/ {{ servicio.precio?.toFixed(2) }}</td>
-      <td class="flex gap-2">
+      <td class="flex gap-2 justify-center">
         <button
-          class="bg-emerald-500 text-white px-4 py-1 rounded-lg"
+          class="bg-emerald-500 text-white px-4 py-2 rounded-lg cursor-pointer my-0.5"
           [routerLink]="['/dashboard/servicio/editar', servicio.id!]"
         >
           Editar
         </button>
         <button
-          class="bg-red-500 text-white px-4 py-1 rounded-lg cursor-pointer"
+          class="bg-red-500 text-white px-4 py-2 rounded-lg cursor-pointer my-0.5"
           (click)="eliminar(servicio.id)"
         >
           Eliminar

@@ -9,17 +9,17 @@
             </th>
             <th class="p-4 border-b border-slate-600 bg-slate-700">
                 <p class="text-sm font-normal leading-none text-slate-300">
-                    Nombre
+                    username
                 </p>
             </th>
             <th class="p-4 border-b border-slate-600 bg-slate-700">
                 <p class="text-sm font-normal leading-none text-slate-300">
-                    Direccion
+                    Password
                 </p>
             </th>
             <th class="p-4 border-b border-slate-600 bg-slate-700">
                 <p class="text-sm font-normal leading-none text-slate-300">
-                    Telefono
+                    Rol
                 </p>
             </th>
             <th class="p-4 border-b border-slate-600 bg-slate-700 text-center">
@@ -31,18 +31,14 @@
     </thead>
     <tbody>
 
-        <tr *ngFor="let dueno of duenos" class="hover:bg-slate-100">
-            <td>{{dueno.id}}</td>
-            <td>{{dueno.nombre}}</td>
-            <td>{{dueno.direccion}}</td>
-            <td>{{dueno.telefono}}</td>
+        <tr *ngFor="let u of usuario" class="hover:bg-slate-100">
+            <td>{{u.id}}</td>
+            <td>{{u.username}}</td>
+            <td>****************</td>
+            <td>{{u.rol}}</td>
             <td class="flex gap-2 justify-center">
-                <button class="bg-emerald-500 text-white px-4 py-2 cursor-pointer rounded-lg my-0.5"
-                    [routerLink]="['/dashboard/dueno/editar', dueno.id!]">Editar</button>
-                <!-- <ng-container *ngIf="dueno.id !== undefined"> -->
                 <button class="bg-red-500 text-white px-4 py-2 rounded-lg cursor-pointer my-0.5"
-                    (click)="eliminar(dueno.id)">Eliminar</button>
-                <!-- </ng-container> -->
+                    (click)="eliminar(u.id)">Eliminar</button>                
             </td>
         </tr>
     </tbody>

@@ -1,4 +1,18 @@
-<button class="bg-emerald-500 text-white px-4 py-1 rounded-lg cursor-pointer mb-1" routerLink="crear">Agregar</button>
+<div class="flex justify-between rounded-lg shadow-lg mb-4">
+  <button class="bg-emerald-500 text-white px-8 py-1 rounded-lg cursor-pointer mb-1" routerLink="crear">Agregar</button>
+  <div class="w-full max-w-sm overflow-hidden rounded-xl p-5">
+    <form (ngSubmit)="buscar()">
+      <div class="flex overflow-hidden rounded-md bg-gray-200 focus:outline focus:outline-blue-500">
+        <input  type="text" placeholder="Buscar..." class="w-full rounded-bl-md rounded-tl-md bg-gray-100 px-4 py-2.5 text-gray-700 focus:outline-blue-500" [(ngModel)]="term" name="term" autocomplete="off"/>
+        <button class="bg-green-600 px-3.5 text-white duration-150 hover:bg-blue-600 cursor-pointer" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </button>
+      </div>
+    </form>
+</div>
+</div>
 
 <table class="w-full text-left table-auto min-w-max">
   <thead>
@@ -18,7 +32,7 @@
       <th class="p-4 border-b border-slate-600 bg-slate-700">
         <p class="text-sm font-normal leading-none text-slate-300">Total</p>
       </th>
-      <th class="p-4 border-b border-slate-600 bg-slate-700">
+      <th class="p-4 border-b border-slate-600 bg-slate-700 text-center">
         <p class="text-sm font-normal leading-none text-slate-300">Acciones</p>
       </th>
     </tr>
@@ -26,7 +40,7 @@
   <tbody>
     <tr *ngFor="let factura of facturas" class="hover:bg-slate-100">
       <td class="p-4">{{ factura.id }}</td>
-      <td class="p-4">{{ factura.fecha | date:'shortDate' }}</td>
+      <td class="p-4">{{ factura.fecha | date:'dd/MM/yy' }}</td>
       <td class="p-4">{{ factura.dueno?.nombre }}</td>
       <td class="p-4">
         <ul class="list-disc list-inside">
@@ -36,10 +50,10 @@
         </ul>
       </td>
       <td class="p-4">{{ factura.total | currency }}</td>
-      <td class="p-4 flex gap-2">
-        <button class="bg-emerald-500 text-white px-4 py-1 rounded-lg"
+      <td class="p-4 flex gap-2 justify-center">
+        <button class="bg-emerald-500 text-white px-4 py-2 rounded-lg cursor-pointer"
           [routerLink]="['/dashboard/factura/editar', factura.id!]">Editar</button>
-        <button class="bg-red-500 text-white px-4 py-1 rounded-lg cursor-pointer"
+        <button class="bg-red-500 text-white px-4 py-2 rounded-lg cursor-pointer"
           (click)="eliminar(factura.id)">Eliminar</button>
       </td>
     </tr>

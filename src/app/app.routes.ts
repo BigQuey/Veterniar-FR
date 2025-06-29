@@ -14,6 +14,8 @@ import { CrearServicioComponent } from './dashboard/servicio/crear-servicio/crea
 import { EditarServicioComponent } from './dashboard/servicio/editar-servicio/editar-servicio.component';
 import { CrearFacturaComponent } from './dashboard/factura/crear-factura/crear-factura.component';
 import { EditarFacturaComponent } from './dashboard/factura/editar-factura/editar-factura.component';
+import { UsuarioComponent } from './dashboard/usuario/usuario.component';
+import { CrearUsuarioComponent } from './dashboard/usuario/crear-usuario/crear-usuario.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -26,6 +28,7 @@ export const routes: Routes = [
             { path: 'mascota', component: MascotaComponent },
             { path: 'factura', component: FacturaComponent },
             { path: 'dueno', component: DuenoComponent },
+            { path: 'usuario', component: UsuarioComponent },
             { path: 'dueno/crear', component: CrearDuenoComponent },
             { path: 'dueno/editar/:id', component: EditarDuenoComponent },
             { path: 'mascota/crear', component: CrearMascotaComponent },
@@ -33,7 +36,8 @@ export const routes: Routes = [
             { path: 'servicio/crear', component: CrearServicioComponent },
             { path: 'servicio/editar/:id', component: EditarServicioComponent },
             { path: 'factura/crear', component: CrearFacturaComponent },
-            { path: 'factura/editar/:id', component: EditarFacturaComponent }
+            { path: 'factura/editar/:id', component: EditarFacturaComponent },
+            { path: 'usuario/crear', component: CrearUsuarioComponent }
             
         ]
     },
