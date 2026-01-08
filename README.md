@@ -1,59 +1,55 @@
-# PRveterina
+# 🐾 Veterinaria PR - Sistema de Gestión Veterinaria
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.10.
+Una aplicación moderna y eficiente para la gestión integral de clínicas veterinarias, diseñada con una estética de vanguardia y centrada en la experiencia del usuario.
 
-## Development server
+## ✨ Características Principales
 
-To start a local development server, run:
+- **Dashboard Inteligente**: Vista general de las métricas clave de la clínica.
+- **Gestión de Pacientes (Mascotas)**: Control detallado de animales, incluyendo especies, razas y propietarios.
+- **Historial Clínico Digital**: Seguimiento exhaustivo de consultas, diagnósticos y tratamientos.
+- **Control de Citas**: Sistema de agendamiento para optimizar el flujo de trabajo.
+- **Facturación y Pagos**: Emisión de facturas con actualización de estado de pago en tiempo real y soporte para múltiples métodos de pago (Efectivo, Tarjeta, Transferencia).
+- **Inventario de Medicamentos**: Gestión de stock de fármacos y suministros médicos.
+- **Seguridad y Roles**: Protección de rutas mediante Guards y manejo de sesiones con JWT.
 
-```bash
-ng serve
-```
+## 🛠️ Stack Tecnológico
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Frontend**: [Angular 19](https://angular.dev/)
+- **Estilos**: [Tailwind CSS](https://tailwindcss.com/)
+- **Iconografía**: [Heroicons](https://heroicons.com/)
+- **Gestión de Estado**: Servicios reactivos con Observables (RxJS)
+- **Diseño**: Glassmorphism, Gradientes modernos y Micro-animaciones.
 
-## Code scaffolding
+## 🚀 Instalación y Desarrollo
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. **Clonar el repositorio**:
+   ```bash
+   git clone https://github.com/tu-usuario/veterinaria-fr.git
+   cd veterinaria-fr
+   ```
 
-```bash
-ng generate component component-name
-```
+2. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. **Ejecutar servidor de desarrollo**:
+   ```bash
+   ng serve
+   ```
+   Accede a `http://localhost:4200/` en tu navegador.
 
-```bash
-ng generate --help
-```
+## 📦 Construcción para Producción
 
-## Building
-
-To build the project run:
-
+Para generar el bundle de producción, ejecuta:
 ```bash
 ng build
 ```
+Los archivos compilados se guardarán en el directorio `dist/`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🔒 Protección de Rutas
 
-## Running unit tests
+El acceso al dashboard está protegido mediante el `AuthGuard`, asegurando que solo usuarios autenticados puedan ver y gestionar la información sensible de la clínica.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+Desarrollado con ❤️ para veterinarios modernos.

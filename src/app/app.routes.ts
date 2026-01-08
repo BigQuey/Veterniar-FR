@@ -25,12 +25,15 @@ import { MedicamentoComponent } from './dashboard/medicamento/medicamento.compon
 import { CrearMedicamentoComponent } from './dashboard/medicamento/crear-medicamento/crear-medicamento.component';
 import { EditarMedicamentoComponent } from './dashboard/medicamento/editar-medicamento/editar-medicamento.component';
 
+import { authGuard } from './guards/auth.guard';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate: [authGuard],
         children: [
             { path: 'home', component: HomeComponent },
             { path: 'servicio', component: ServicioComponent },
