@@ -5,13 +5,13 @@ import { Dueno } from '../../../models/dueno.model';
 import { FacturaService } from '../../../services/factura.service';
 import { DuenoService } from '../../../services/dueno.service';
 import { ServicioService } from '../../../services/servicio.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Factura } from '../../../models/factura.model';
 import { Servicio } from '../../../models/servicio.model';
 
 @Component({
   selector: 'app-crear-factura',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './crear-factura.component.html',
   styleUrl: './crear-factura.component.css',
 })
@@ -25,6 +25,8 @@ export class CrearFacturaComponent {
       subtotal: number;
     }[],
     total: 0,
+    metodoPago: 'EFECTIVO',
+    estadoPago: 'PENDIENTE',
   };
 
   duenosDisponibles: Dueno[] = [];
@@ -35,7 +37,7 @@ export class CrearFacturaComponent {
     private duenoService: DuenoService,
     private servicioService: ServicioService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cargarDuenos();
@@ -65,9 +67,9 @@ export class CrearFacturaComponent {
   eliminarDetalle(index: number) {
     this.factura.detalles.splice(index, 1);
     this.factura.total = this.factura.detalles.reduce(
-    (acc, d) => acc + (d.subtotal || 0),
-    0
-  );
+      (acc, d) => acc + (d.subtotal || 0),
+      0
+    );
   }
 
   calcularSubtotal(index: number) {
@@ -79,6 +81,14 @@ export class CrearFacturaComponent {
     } else {
       detalle.subtotal = 0;
     }
+    this.calcularTotal();
+  }
+
+  calcularTotal() {
+    this.factura.total = this.factura.detalles.reduce(
+      (acc, d) => acc + (d.subtotal || 0),
+      0
+    );
   }
 
   guardarFactura() {
@@ -92,9 +102,11 @@ export class CrearFacturaComponent {
         (acc, d) => acc + (d.subtotal || 0),
         0
       ),
+      metodoPago: this.factura.metodoPago as any,
+      estadoPago: this.factura.estadoPago as any,
     };
 
-    
+
     facturaAEnviar.detalles = this.factura.detalles.map((d) => ({
       servicio: d.servicio!,
       cantidad: d.cantidad,

@@ -7,7 +7,7 @@ import { Factura } from '../models/factura.model';
 })
 export class FacturaService {
 
-   private apiUrl = 'http://localhost:8080/api/factura';
+  private apiUrl = 'http://localhost:8080/api/factura';
 
   constructor(private http: HttpClient) { }
 
@@ -29,5 +29,9 @@ export class FacturaService {
 
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  updateEstado(id: number, factura: Factura) {
+    return this.http.put<Factura>(`${this.apiUrl}/${id}/estado`, factura.estadoPago);
   }
 }

@@ -1,29 +1,212 @@
-<div class="bg-gradient-to-b from-white to-green-100 min-h-screen flex flex-col">
+<div class="p-6 bg-gray-50/50 min-h-screen">
     <!-- Header -->
-    <header class="bg-green-600 text-white p-5 shadow">
-        <div class="container mx-auto text-center">
-            <h1 class="text-3xl font-bold">Clínica Veterinaria Solo Peludos</h1>
+    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Panel de Control</h1>
+            <p class="text-gray-500 mt-1">Bienvenido de nuevo. Aquí tienes un resumen de hoy.</p>
         </div>
-    </header>
+        <div class="flex items-center gap-3">
+            <button (click)="fetchData()"
+                class="px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 transition-all flex items-center gap-2 text-sm font-medium text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                Actualizar
+            </button>
+            <button routerLink="/dashboard/cita/crear"
+                class="px-4 py-2 bg-green-600 text-white rounded-xl shadow-lg shadow-green-600/20 hover:bg-green-700 transition-all text-sm font-medium">
+                + Registro Nuevo
+            </button>
+        </div>
+    </div>
 
-    <!-- Main Section -->
-    <main class="flex-grow flex items-center justify-center">
-        <div class="text-center max-w-2xl px-4">
-            <h2 class="text-4xl font-bold text-green-700 mb-4">¡Bienvenido a nuestro sistema!</h2>
-            <p class="text-lg text-gray-700 leading-relaxed">
-                Este sistema ha sido diseñado para facilitar la gestión integral de nuestra clínica veterinaria.
-                Aquí se administran los datos de los dueños, mascotas, servicios, y facturación,
-                todo en una plataforma moderna, rápida y segura.
-            </p>
-            <div class="mt-6">
-                <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Mascota"
-                    class="w-32 mx-auto opacity-80">
+    <div *ngIf="loading" class="flex items-center justify-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+    </div>
+    <!-- contenedor de cartas-->
+    <div *ngIf="!loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Carta de Mascotas -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">Mascotas</span>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">{{ totalPets }}</h3>
+            <p class="text-gray-500 text-sm mt-1">Total registradas</p>
+        </div>
+
+        <!-- Carta de Dueños -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-purple-50 text-purple-600 rounded-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-lg">Dueños</span>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">{{ totalOwners }}</h3>
+            <p class="text-gray-500 text-sm mt-1">Clientes activos</p>
+        </div>
+
+        <!-- Carta de Facturas -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-orange-50 text-orange-600 rounded-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded-lg">Facturas</span>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">{{ totalInvoices }}</h3>
+            <p class="text-gray-500 text-sm mt-1">Emitidas mes actual</p>
+        </div>
+
+        <!-- Carta de Ingresos -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <div class="p-3 bg-green-50 text-green-600 rounded-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6v12m-3-2.818.879.659c1.546 1.16 3.743.249 3.743-1.636 0-1.315-.875-2.28-2.584-2.885M9.172 11.73c2.327-.839 3.161-2.269 2.533-3.074-.628-.805-2.107-.96-3.078-.139-.458.388-.734.89-.734 1.411H5.25" />
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-lg">Ingresos</span>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-800">${{ totalRevenue | number:'1.2-2' }}</h3>
+            <p class="text-gray-500 text-sm mt-1">Total recaudado</p>
+        </div>
+    </div>
+    <!-- Segundo contenedor-->
+    <div *ngIf="!loading" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Tabla de Mascotas Recientes -->
+        <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-6 border-b border-gray-50 flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-800">Mascotas Recientes</h2>
+                <a href="#" class="text-sm font-medium text-green-600 hover:text-green-700">Ver todas</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50/50 text-xs text-gray-500 uppercase font-semibold">
+                        <tr>
+                            <th class="px-6 py-4">Mascota</th>
+                            <th class="px-6 py-4">Dueño</th>
+                            <th class="px-6 py-4">Especie</th>
+                            <th class="px-6 py-4">Raza</th>
+                            <th class="px-6 py-4">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        <tr *ngFor="let pet of recentPets" class="hover:bg-gray-50/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xs font-bold">
+                                        {{ pet.nombre?.charAt(0) }}
+                                    </div>
+                                    <span class="font-medium text-gray-800">{{ pet.nombre }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ pet.dueno?.nombre }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium">{{
+                                    pet.especie }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ pet.raza }}</td>
+                            <td class="px-6 py-4 text-sm">
+                                <button class="text-gray-400 hover:text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="recentPets.length === 0">
+                            <td colspan="5" class="px-6 py-12 text-center text-gray-500 italic">No hay registros
+                                recientes</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="bg-green-600 text-white text-center p-4">
-        © 2025 Clínica Veterinaria Solo Peludos
-    </footer>
+        <!-- Carta de Estado del Sistema -->
+        <div class="space-y-6">
+            <div
+                class="bg-gradient-to-br from-green-600 to-emerald-700 p-6 rounded-3xl shadow-xl shadow-green-600/20 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-lg font-bold mb-2">Estado del Sistema</h2>
+                    <p class="text-green-100 text-sm mb-4">Todos los servicios están funcionando correctamente.</p>
+                    <div class="flex items-center gap-2 text-xs bg-white/10 backdrop-blur-md rounded-xl p-3">
+                        <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                        Conexión Estable con BD
+                    </div>
+                </div>
+                <svg class="absolute right-0 bottom-0 opacity-10 w-32 h-32 transform translate-x-8 translate-y-8"
+                    fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm0-14c-3.309 0-6 2.691-6 6s2.691 6 6 6 6-2.691 6-6-2.691-6-6-6zm0 10c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z" />
+                </svg>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Acciones Rápidas</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <button
+                        class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-2xl hover:bg-green-50 hover:text-green-600 transition-all border border-transparent hover:border-green-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 mb-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        <span class="text-xs font-semibold">Facturar</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-2xl hover:bg-blue-50 hover:text-blue-600 transition-all border border-transparent hover:border-blue-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 mb-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                        <span class="text-xs font-semibold">Cliente</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-2xl hover:bg-purple-50 hover:text-purple-600 transition-all border border-transparent hover:border-purple-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 mb-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0" />
+                        </svg>
+                        <span class="text-xs font-semibold">Mascota</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-2xl hover:bg-orange-50 hover:text-orange-600 transition-all border border-transparent hover:border-orange-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6 mb-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                        </svg>
+                        <span class="text-xs font-semibold">Reporte</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

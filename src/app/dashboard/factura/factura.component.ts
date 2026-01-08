@@ -17,7 +17,7 @@ export class FacturaComponent {
   mensajeExito: string = '';
   // Para la búsqueda
   term: string = '';
-  constructor(private facturaService: FacturaService) {}
+  constructor(private facturaService: FacturaService) { }
 
   ngOnInit(): void {
     this.obtenerFacturas();
@@ -25,14 +25,28 @@ export class FacturaComponent {
 
   obtenerFacturas() {
     this.facturaService.getAll().subscribe({
-      next: (facturas: Factura[]) => {
-        this.facturas = facturas;
-        this.facturasOriginal = facturas;
+      next: (data: any) => {
+        this.facturas = data;
       },
-      error: (error) => {
-        console.error('Error al obtener las facturas:', error);
-      },
+      error: (error) => console.log(error)
     });
+  }
+
+  getEstadoClass(estado: string | undefined): string {
+    switch (estado) {
+      case 'PAGADO': return 'text-emerald-700 bg-emerald-50 border-emerald-100';
+      case 'PENDIENTE': return 'text-amber-700 bg-amber-50 border-amber-100';
+      default: return 'text-slate-500 bg-slate-50 border-slate-100';
+    }
+  }
+
+  getMetodoIcon(metodo: string | undefined): string {
+    switch (metodo) {
+      case 'EFECTIVO': return '💵';
+      case 'TARJETA': return '💳';
+      case 'TRANSFERENCIA': return '🏦';
+      default: return '📄';
+    }
   }
 
   eliminar(id: number | undefined): void {
@@ -51,17 +65,38 @@ export class FacturaComponent {
       });
     }
   }
-  buscar(){
+  buscar() {
     const lower = this.term.toLowerCase();
-    if(!lower){
+    if (!lower) {
       this.facturas = [...this.facturasOriginal];
       return;
     }
     this.facturas = this.facturasOriginal.filter(f =>
-    f.id?.toString().includes(this.term) ||
-    f.dueno?.nombre?.toLowerCase().includes(lower)
-  );
+      f.id?.toString().includes(this.term) ||
+      f.dueno?.nombre?.toLowerCase().includes(lower)
+    );
 
-  console.log('Resultados de la búsqueda:', this.facturas);
+    console.log('Resultados de la búsqueda:', this.facturas);
   }
+
+  actualizarEstado(factura: Factura): void {
+    if (factura.id === undefined) return;
+
+    if (confirm('¿Quieres actualizar el estado de pago?')) {
+      const nuevoEstado: 'PAGADO' | 'PENDIENTE' = factura.estadoPago === 'PAGADO' ? 'PENDIENTE' : 'PAGADO';
+      const facturaActualizada: Factura = { ...factura, estadoPago: nuevoEstado };
+
+      this.facturaService.update(factura.id, facturaActualizada).subscribe({
+        next: () => {
+          this.obtenerFacturas();
+          this.mensajeExito = `El estado se ha actualizado a ${nuevoEstado} correctamente.`;
+          setTimeout(() => (this.mensajeExito = ''), 1500);
+        },
+        error: (error) => {
+          console.error('Error al actualizar el estado de la factura:', error);
+        },
+      });
+    }
+  }
+
 }

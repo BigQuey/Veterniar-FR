@@ -7,4 +7,6 @@ export interface Factura {
     dueno?: Dueno;
     detalles?: DetalleFactura[];
     total?: number;
+    metodoPago?: 'EFECTIVO' | 'TARJETA' | 'TRANSFERENCIA';
+    estadoPago?: 'PAGADO' | 'PENDIENTE';
 }

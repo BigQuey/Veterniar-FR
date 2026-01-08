@@ -12,9 +12,12 @@ export class UsuarioService {
     return this.http.get(this.apiUrl);
   }
   create(usuario: Usuario) {
-    return this.http.post(`${this.apiUrl}/registrar` , usuario);
+    return this.http.post(`${this.apiUrl}/registrar`, usuario);
   }
   delete(id: number | undefined) {
     return this.http.delete(`${this.apiUrl}/delete/${id}`);
+  }
+  getAllVeterinarios() {
+    return this.http.get(`${this.apiUrl}/veterinario`);
   }
 }

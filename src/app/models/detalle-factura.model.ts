@@ -5,4 +5,5 @@ export interface DetalleFactura {
     cantidad?: number;
     subtotal?: number;
     servicio?: Servicio | null;
+    factura?: any;
 }

@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Dueno } from '../../../models/dueno.model';
 import { DuenoService } from '../../../services/dueno.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-editar-dueno',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './editar-dueno.component.html',
   styleUrl: './editar-dueno.component.css'
 })
@@ -18,7 +18,7 @@ export class EditarDuenoComponent {
     private duenoService: DuenoService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));

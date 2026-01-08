@@ -1,113 +1,131 @@
-<div
-  class="bg-cream text-charcoal min-h-screen font-sans leading-normal overflow-x-hidden lg:overflow-auto"
->
-  <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
-    <section class="bg-cream-lighter p-4 shadow">
-      <div class="md:flex">
-        <h2 class="md:w-1/3 uppercase tracking-wide text-sm sm:text-lg mb-6">
-          Agregar Mascota
-        </h2>
-      </div>
-      <form (ngSubmit)="actualizar()">
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">
-              Información General
-            </legend>
-            <p class="text-xs font-light text-red">Sección requerida.</p>
+<div class="max-w-4xl mx-auto space-y-6">
+  <!-- Header Section -->
+  <div class="flex items-center gap-4">
+    <a routerLink="/dashboard/mascota"
+      class="p-2 text-slate-400 hover:text-emerald-600 transition-colors bg-white rounded-xl border border-slate-200 shadow-sm group">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+        class="w-5 h-5 group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+      </svg>
+    </a>
+    <div *ngIf="mascota">
+      <h1 class="text-2xl font-bold text-slate-800">Editar Mascota: {{ mascota.nombre }}</h1>
+      <p class="text-sm text-slate-400 font-medium tracking-wide">Actualiza la información del paciente</p>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <form *ngIf="mascota" (ngSubmit)="actualizar()"
+    class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+    <!-- Form Body -->
+    <div class="p-8 md:p-12 space-y-10">
+
+      <!-- Section: General Info -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Información General</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Nombre del Paciente</label>
+            <input type="text" name="nombre" [(ngModel)]="mascota.nombre" required
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
           </div>
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Nombre</label
-              >
-              <input
-                class="w-full shadow-inner p-4 border-0"
-                type="text"
-                name="nombre"
-                [(ngModel)]="mascota.nombre"
-                placeholder="Nombre de la mascota"
-              />
-            </div>
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Especie</label
-              >
-              <input
-                class="w-full shadow-inner p-4 border-0"
-                type="text"
-                name="especie"
-                [(ngModel)]="mascota.especie"
-                placeholder="Ej. Perro, Gato"
-              />
-            </div>
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Raza</label
-              >
-              <input
-                class="w-full shadow-inner p-4 border-0"
-                type="text"
-                name="raza"
-                [(ngModel)]="mascota.raza"
-                placeholder="Ej. Labrador, Siamés"
-              />
-            </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Fecha de Nacimiento</label>
+            <input type="date" name="fechaNacimiento" [(ngModel)]="mascota.fechaNacimiento"
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
           </div>
         </div>
 
-        <!-- <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Dueño</legend>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Especie</label>
+            <input type="text" name="especie" [(ngModel)]="mascota.especie" required
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
           </div>
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Nombre del Dueño</label
-              >
-              <input
-                class="w-full shadow-inner p-4 border-0"
-                type="text"
-                name="duenoNombre"
-                [(ngModel)]="duenoNombre"
-                placeholder="Nombre del dueño asociado"
-              />
-            </div>
-          </div>
-        </div> -->
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Dueño</legend>
-          </div>
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Nombre del Dueño</label
-              >
-              <select
-                class="shadow-inner p-4 border-0"
-                [(ngModel)]="mascota.dueno!.id"
-                name="duenoId"
-              >
-                <option *ngFor="let dueno of duenos" [value]="dueno.id">
-                  {{ dueno.nombre }}
-                </option>
-              </select>
-            </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Raza</label>
+            <input type="text" name="raza" [(ngModel)]="mascota.raza" required
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
           </div>
         </div>
-        <div
-          class="md:flex mb-6 border border-t-1 border-b-0 border-x-0 border-cream-dark"
-        >
-          <div class="md:flex-1 px-3 text-center md:text-right">
-            <input
-              class="button text-cream-lighter bg-brick hover:bg-brick-dark cursor-pointer hover:bg-gray-500 text-white p-3 rounded-md my-1.5 bg-gray-700"
-              type="submit"
-              value="actualizar Mascota"
-            />
+      </div>
+
+      <!-- Section: Details -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Detalles Físicos y Dueño</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Peso (kg)</label>
+            <input type="number" name="peso" [(ngModel)]="mascota.peso"
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Sexo</label>
+            <select name="sexo" [(ngModel)]="mascota.sexo"
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
+              <option value="MACHO">Macho</option>
+              <option value="HEMBRA">Hembra</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Color</label>
+            <input type="text" name="color" [(ngModel)]="mascota.color"
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
           </div>
         </div>
-      </form>
-    </section>
-  </main>
+
+        <div class="grid grid-cols-1 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Dueño Responsable</label>
+            <select name="duenoId" [(ngModel)]="mascota.dueno!.id" required
+              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
+              <option [ngValue]="undefined" disabled>Selecciona un dueño</option>
+              <option *ngFor="let d of duenos" [value]="d.id">{{ d.nombre }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Notes -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Observaciones Adicionales</h2>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Características
+            Especiales</label>
+          <textarea name="caracteristicas" [(ngModel)]="mascota.caracteristicas" rows="4"
+            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium resize-none"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Footer -->
+    <div class="p-8 bg-slate-50 border-t border-slate-100 flex justify-end gap-4">
+      <a routerLink="/dashboard/mascota"
+        class="px-8 py-3.5 bg-white hover:bg-slate-100 text-slate-600 rounded-2xl font-bold transition-all border border-slate-200">
+        Cancelar
+      </a>
+      <button type="submit"
+        class="px-10 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-600/20 active:scale-95">
+        Actualizar Datos
+      </button>
+    </div>
+  </form>
+
+  <!-- Loading State -->
+  <div *ngIf="!mascota"
+    class="p-20 flex flex-col items-center justify-center gap-4 bg-white rounded-[2rem] border border-slate-100 shadow-sm animate-pulse">
+    <div class="w-12 h-12 bg-slate-100 rounded-full"></div>
+    <div class="h-4 w-48 bg-slate-100 rounded-full"></div>
+  </div>
 </div>

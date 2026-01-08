@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-editar-servicio',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './editar-servicio.component.html',
   styleUrl: './editar-servicio.component.css'
 })
@@ -18,7 +18,7 @@ export class EditarServicioComponent {
     private servicioService: ServicioService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));

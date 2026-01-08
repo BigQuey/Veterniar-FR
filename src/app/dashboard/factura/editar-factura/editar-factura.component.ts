@@ -8,24 +8,24 @@ import { Factura } from '../../../models/factura.model';
 import { Dueno } from '../../../models/dueno.model';
 import { Servicio } from '../../../models/servicio.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-editar-factura',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './editar-factura.component.html',
   styleUrl: './editar-factura.component.css'
 })
 export class EditarFacturaComponent {
   factura: Factura = {
-    id: undefined, 
+    id: undefined,
     fecha: '',
-    dueno: undefined, 
+    dueno: undefined,
     detalles: []
   };
   duenosDisponibles: Dueno[] = [];
   serviciosDisponibles: Servicio[] = [];
   mensajeExito: string = '';
-  facturaId: number | undefined;  
+  facturaId: number | undefined;
 
   constructor(
     private facturaService: FacturaService,
@@ -41,18 +41,18 @@ export class EditarFacturaComponent {
     this.obtenerDuenos();
     // this.obtenerServicios();
     this.servicioService.getAll().subscribe({
-    next: (servicios: Servicio[]) => {
-      this.serviciosDisponibles = servicios;
+      next: (servicios: Servicio[]) => {
+        this.serviciosDisponibles = servicios;
 
-      if (this.facturaId) {
-        this.obtenerFactura(); 
+        if (this.facturaId) {
+          this.obtenerFactura();
+        }
+      },
+      error: (error) => {
+        console.log(error);
       }
-    },
-    error: (error) => {
-      console.log(error);
-    }
-  });
-   
+    });
+
     // if (this.facturaId) {
     //   this.obtenerFactura();
     // }
@@ -62,22 +62,23 @@ export class EditarFacturaComponent {
     if (this.facturaId) {
       this.facturaService.getOne(this.facturaId).subscribe({
         next: (factura: Factura) => {
-          console.log('Factura cargada:', factura); 
+          console.log('Factura cargada:', factura);
           this.factura = factura;
-          
-          
+
+
           if (!this.factura.detalles) {
-            this.factura.detalles = []; 
+            this.factura.detalles = [];
           }
-          
+
           this.factura.detalles.forEach(detalle => {
-          const servicioEncontrado = this.serviciosDisponibles.find(
-            s => s.id === detalle.servicio?.id
-          );
-          if (servicioEncontrado) {
-            detalle.servicio = servicioEncontrado; 
-          }
-        });
+            const servicioEncontrado = this.serviciosDisponibles.find(
+              s => s.id === detalle.servicio?.id
+            );
+            if (servicioEncontrado) {
+              detalle.servicio = servicioEncontrado;
+            }
+          });
+          this.calcularTotal();
         },
         error: (error: HttpErrorResponse) => {
           console.log('Error al obtener la factura:', error.message);
@@ -85,8 +86,8 @@ export class EditarFacturaComponent {
       });
     }
   }
-  
-  
+
+
 
   obtenerDuenos() {
     this.duenoService.getAll().subscribe({
@@ -119,11 +120,19 @@ export class EditarFacturaComponent {
         detalle.subtotal = 0;
       }
     }
+    this.calcularTotal();
+  }
+
+  calcularTotal() {
+    this.factura.total = this.factura.detalles?.reduce(
+      (acc, d) => acc + (d.subtotal || 0),
+      0
+    ) || 0;
   }
 
   agregarDetalle() {
     if (!this.factura.detalles) {
-      this.factura.detalles = [];  
+      this.factura.detalles = [];
     }
     this.factura.detalles.push({
       servicio: undefined,
@@ -133,12 +142,9 @@ export class EditarFacturaComponent {
   }
 
   eliminarDetalle(index: number) {
-    console.log('Eliminando detalle en el índice:', index); 
-  
     if (this.factura.detalles && this.factura.detalles.length > 0) {
-      // Asegúrate de eliminar solo si hay detalles en la lista
       this.factura.detalles.splice(index, 1);
-      console.log('Detalles después de eliminar:', this.factura.detalles);
+      this.calcularTotal();
     }
   }
 
@@ -147,8 +153,8 @@ export class EditarFacturaComponent {
       console.log(this.factura.fecha);
       this.factura.fecha = new Date(this.factura.fecha || "").toISOString().split('T')[0];
       console.log(this.factura.fecha);
-      this.facturaService.update(this.factura.id, this.factura).subscribe(()=>{
-         
+      this.facturaService.update(this.factura.id, this.factura).subscribe(() => {
+
         this.router.navigate(['/dashboard/factura']);
       });
     } else {
