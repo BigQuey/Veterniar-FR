@@ -1,9 +1,14 @@
-import { Servicio } from "./servicio.model";
+import { Servicio } from './servicio.model';
 
 export interface DetalleFactura {
     id?: number;
+    servicio?: Servicio;
+    precioUnitario?: number;
     cantidad?: number;
     subtotal?: number;
-    servicio?: Servicio | null;
-    factura?: any;
+}
+
+export interface DetalleFacturaRequest {
+    servicioId: number;
+    cantidad: number;
 }

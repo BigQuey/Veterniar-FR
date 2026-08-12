@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { map, Observable, filter } from 'rxjs';
 import { LoginService } from '../services/login.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ServicioService } from '../services/servicio.service';
@@ -21,8 +21,15 @@ export class DashboardComponent implements OnInit {
   username: string | null = null;
   rol: string | null = null;
   cantidadServicios: number = 0;
+  sidebarAbierto = false;
 
   ngOnInit(): void {
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => {
+        this.sidebarAbierto = false;
+      });
+
     if (isPlatformBrowser(this.platformId)) {
       this.username = localStorage.getItem('username');
       this.rol = localStorage.getItem('rol');
@@ -45,6 +52,14 @@ export class DashboardComponent implements OnInit {
 
     this.loginService.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleSidebar(): void {
+    this.sidebarAbierto = !this.sidebarAbierto;
+  }
+
+  cerrarSidebar(): void {
+    this.sidebarAbierto = false;
   }
   getCantidadServicios(): Observable<number> {
     const res = this.servicioService.getAll().pipe(

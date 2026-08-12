@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HistorialClinico } from '../models/historial-clinico.model';
+import { HistorialClinico, HistorialClinicoRequest } from '../models/historial-clinico.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class HistorialClinicoService {
-    private apiUrl = 'http://localhost:8080/api/historial-clinico';
+    private apiUrl = `${environment.apiUrl}/historial-clinico`;
     constructor(private http: HttpClient) { }
 
     getAll() {
@@ -17,15 +18,23 @@ export class HistorialClinicoService {
         return this.http.get<HistorialClinico>(`${this.apiUrl}/${id}`);
     }
 
-    create(historial: HistorialClinico) {
+    create(historial: HistorialClinicoRequest) {
         return this.http.post<HistorialClinico>(this.apiUrl, historial);
     }
 
-    update(id: number, historial: HistorialClinico) {
+    createDesdeCita(citaId: number, historial: HistorialClinicoRequest) {
+        return this.http.post<HistorialClinico>(`${this.apiUrl}/cita/${citaId}`, historial);
+    }
+
+    update(id: number, historial: HistorialClinicoRequest) {
         return this.http.put<HistorialClinico>(`${this.apiUrl}/${id}`, historial);
     }
 
-    delete(id: number) {
-        return this.http.delete(`${this.apiUrl}/${id}`);
+    getPorMascota(mascotaId: number) {
+        return this.http.get<HistorialClinico[]>(`${this.apiUrl}/mascota/${mascotaId}`);
+    }
+
+    getPorVeterinario(veterinarioId: number) {
+        return this.http.get<HistorialClinico[]>(`${this.apiUrl}/veterinario/${veterinarioId}`);
     }
 }

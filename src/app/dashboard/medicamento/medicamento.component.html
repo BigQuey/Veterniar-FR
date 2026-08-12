@@ -1,8 +1,8 @@
 <div class="space-y-6">
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 class="text-2xl font-bold text-slate-800">Inventario de Medicamentos</h1>
-        <a routerLink="crear"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl transition-all shadow-lg shadow-emerald-600/20 font-bold flex items-center gap-2">
+        <a *ngIf="esAdmin" routerLink="crear"
+            class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-600/20 font-bold w-full sm:w-auto">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -11,8 +11,23 @@
         </a>
     </div>
 
+    <div *ngIf="error"
+        class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm font-medium">
+        {{ error }}
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+        <input type="text" [(ngModel)]="term" (keyup.enter)="buscar()" placeholder="Buscar por nombre..."
+            class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none text-sm">
+        <button (click)="buscar()"
+            class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all sm:w-auto">
+            Buscar
+        </button>
+    </div>
+
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <table class="w-full text-left border-collapse">
+        <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse min-w-[560px]">
             <thead>
                 <tr class="bg-slate-50 border-b border-slate-200">
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Medicamento</th>
@@ -39,7 +54,7 @@
                         <div class="text-sm font-bold text-slate-700">S/.{{ m.precio | number:'1.2-2' }}</div>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end gap-2">
+                        <div *ngIf="esAdmin" class="flex justify-end gap-2">
                             <a [routerLink]="['editar', m.id]"
                                 class="p-2 text-slate-400 hover:text-emerald-600 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -61,6 +76,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
         <div *ngIf="medicamentos.length === 0"
             class="p-12 text-center text-slate-400 bg-slate-50/50 text-sm font-medium">
             No hay medicamentos en el inventario.

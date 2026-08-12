@@ -1,64 +1,80 @@
-<div class="bg-cream text-charcoal min-h-screen font-sans leading-normal overflow-x-hidden lg:overflow-auto">
-    <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
-        <section class="bg-cream-lighter p-4 shadow">
-            <div class="md:flex">
-                <h2 class="md:w-1/3 uppercase tracking-wide text-sm sm:text-lg mb-6">Agregar Usuario</h2>
-            </div>
-            <form (ngSubmit)="guardar()">
-                <div class="md:flex mb-8">
-                    <div class="md:w-1/3">
-                        <legend class="uppercase tracking-wide text-sm">Información</legend>
-                        <p class="text-xs font-light text-red">Sección requerida.</p>
-                    </div>
-                    <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-                        <div class="mb-4">
-                            <label class="block uppercase tracking-wide text-xs font-bold">Username</label>
-                            <input class="w-full shadow-inner p-4 border-0" type="text" name="username"
-                                [(ngModel)]="usuario.username" placeholder="ingresar el nombre del usuario">
-                        </div>
-                        
-                        <div class="md:flex mb-4">
-                            <div class="md:flex-1 md:pr-3">
-                                <label
-                                    class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Password</label>
-                                <input class="w-full shadow-inner p-4 border-0" type="text" name="password"
-                                    [(ngModel)]="usuario.password" placeholder="ingresar raza de la contraseña">
-                            </div>
-                        </div>
-                    </div>
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header Section -->
+    <div class="flex items-center gap-4">
+        <a routerLink="/dashboard/usuario"
+            class="p-2 text-slate-400 hover:text-emerald-600 transition-colors bg-white rounded-xl border border-slate-200 shadow-sm group">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                stroke="currentColor" class="w-5 h-5 group-hover:-translate-x-1 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">Nuevo Usuario</h1>
+            <p class="text-sm text-slate-400 font-medium tracking-wide">Da de alta a un nuevo miembro del equipo</p>
+        </div>
+    </div>
 
+    <div *ngIf="error"
+        class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm font-medium">
+        {{ error }}
+    </div>
+
+    <!-- Form Card -->
+    <form (ngSubmit)="guardar()" class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-8 md:p-12 space-y-10">
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Credenciales de Acceso</h2>
                 </div>
-                <div class="md:flex mb-8">
-                    <div class="md:w-1/3">
-                      <legend class="uppercase tracking-wide text-sm">ROLES</legend>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Username</label>
+                        <input type="text" name="username" [(ngModel)]="usuario.username" required
+                            placeholder="Ej: j.perez"
+                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
                     </div>
-                    <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-                      <div class="mb-4">
-                        <label class="block uppercase tracking-wide text-xs font-bold"
-                          >Selecciona el rol</label
-                        >
-                        <select
-                          class="shadow-inner p-4 border-0"
-                          [(ngModel)]="usuario.rol"
-                          name="rol"
-                        >
-                            <option disabled value="">Selecciona un dueño</option>
-                            <option value="ADMIN">Administrador</option>
-                            <option value="Empleado">Empleado</option>
-                            <option value="VETERINARIO">Veterinario</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                <div class="md:flex mb-6 border border-t-1 border-b-0 border-x-0 border-cream-dark">
-                    <div class="md:flex-1 px-3 text-center md:text-right">
-                        <input
-                            class="button mt-3 p-3 text-cream-lighter bg-brick hover:bg-brick-dark cursor-pointer rounded-md
-                                text-white bg-gray-600 transition-all duration-300 ease-in-out"
-                            type="submit" value="Guardar Mascota" />
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Password</label>
+                        <input type="password" name="password" [(ngModel)]="usuario.password" required
+                            placeholder="Contraseña de acceso"
+                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
                     </div>
                 </div>
-            </form>
-        </section>
-    </main>
+            </div>
+
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Rol</h2>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Selecciona el
+                        rol</label>
+                    <select name="rol" [(ngModel)]="usuario.rol" required
+                        class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
+                        <option [ngValue]="undefined" disabled>Selecciona un rol</option>
+                        <option value="ADMIN">Administrador</option>
+                        <option value="EMPLEADO">Empleado</option>
+                        <option value="VETERINARIO">Veterinario</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Footer -->
+        <div
+            class="p-8 bg-slate-50 border-t border-slate-100 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+            <a routerLink="/dashboard/usuario"
+                class="px-8 py-3.5 bg-white hover:bg-slate-100 text-slate-600 rounded-2xl font-bold transition-all border border-slate-200 w-full sm:w-auto text-center">
+                Cancelar
+            </a>
+            <button type="submit"
+                class="px-10 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-600/20 active:scale-95 w-full sm:w-auto">
+                Guardar Usuario
+            </button>
+        </div>
+    </form>
 </div>

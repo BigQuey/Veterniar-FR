@@ -1,48 +1,52 @@
-<button class="bg-emerald-500 text-white px-4 py-1 rounded-lg cursor-pointer mb-1" routerLink="crear">Agregar</button>
-<table class="w-full text-left table-auto min-w-max">
-    <thead>
-        <tr>
-            <th class="p-4 border-b border-slate-600 bg-slate-700">
-                <p class="text-sm font-normal leading-none text-slate-300">
-                    ID
-                </p>
-            </th>
-            <th class="p-4 border-b border-slate-600 bg-slate-700">
-                <p class="text-sm font-normal leading-none text-slate-300">
-                    username
-                </p>
-            </th>
-            <th class="p-4 border-b border-slate-600 bg-slate-700">
-                <p class="text-sm font-normal leading-none text-slate-300">
-                    Password
-                </p>
-            </th>
-            <th class="p-4 border-b border-slate-600 bg-slate-700">
-                <p class="text-sm font-normal leading-none text-slate-300">
-                    Rol
-                </p>
-            </th>
-            <th class="p-4 border-b border-slate-600 bg-slate-700 text-center">
-                <p class="text-sm font-normal leading-none text-slate-300">
-                    Acciones
-                </p>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 class="text-2xl font-bold text-slate-800">Gestión de Usuarios</h1>
+        <a routerLink="crear"
+            class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-600/20 font-bold w-full sm:w-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Nuevo Usuario
+        </a>
+    </div>
 
-        <tr *ngFor="let u of usuario" class="hover:bg-slate-100">
-            <td>{{u.id}}</td>
-            <td>{{u.username}}</td>
-            <td>****************</td>
-            <td>{{u.rol}}</td>
-            <td class="flex gap-2 justify-center">
-                <button class="bg-red-500 text-white px-4 py-2 rounded-lg cursor-pointer my-0.5"
-                    (click)="eliminar(u.id)">Eliminar</button>                
-            </td>
-        </tr>
-    </tbody>
-</table>
-<div *ngIf="mensajeExito" class="bg-green-100 text-green-800 px-4 py-2 mb-4 rounded">
-    {{ mensajeExito }}
+    <div *ngIf="mensajeExito"
+        class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl text-sm font-bold">
+        {{ mensajeExito }}
+    </div>
+
+    <div *ngIf="error"
+        class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm font-medium">
+        {{ error }}
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse min-w-[480px]">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">ID</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Username</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Rol</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <tr *ngFor="let u of usuario" class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-4 text-sm text-slate-500">{{ u.id }}</td>
+                    <td class="px-6 py-4 text-sm font-bold text-slate-700">{{ u.username }}</td>
+                    <td class="px-6 py-4">
+                        <span
+                            class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700">
+                            {{ u.rol }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <div *ngIf="usuario.length === 0" class="p-12 text-center text-slate-400 bg-slate-50/50 text-sm font-medium">
+            No hay usuarios registrados.
+        </div>
+    </div>
 </div>

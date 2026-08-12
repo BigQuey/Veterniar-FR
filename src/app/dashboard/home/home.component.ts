@@ -32,18 +32,29 @@ export class HomeComponent implements OnInit {
     this.fetchData();
   }
 
+  get esPersonalAdmin(): boolean {
+    const rol = localStorage.getItem('rol');
+    return rol === 'ADMIN' || rol === 'EMPLEADO';
+  }
+
   fetchData() {
     this.loading = true;
-    forkJoin({
-      pets: this.mascotaService.getAll(),
-      owners: this.duenoService.getAll(),
-      invoices: this.facturaService.getAll()
-    }).subscribe({
+
+    const observables: any = {
+      pets: this.mascotaService.getAll()
+    };
+
+    if (this.esPersonalAdmin) {
+      observables.owners = this.duenoService.getAll();
+      observables.invoices = this.facturaService.getAll();
+    }
+
+    forkJoin(observables).subscribe({
       next: (data: any) => {
         this.totalPets = data.pets.length;
-        this.totalOwners = data.owners.length;
-        this.totalInvoices = data.invoices.length;
-        this.totalRevenue = data.invoices.reduce((acc: number, inv: any) => acc + (inv.total || 0), 0);
+        this.totalOwners = data.owners?.length ?? 0;
+        this.totalInvoices = data.invoices?.length ?? 0;
+        this.totalRevenue = data.invoices?.reduce((acc: number, inv: any) => acc + (inv.total || 0), 0) ?? 0;
 
         this.recentPets = data.pets.slice(-5).reverse();
         this.loading = false;

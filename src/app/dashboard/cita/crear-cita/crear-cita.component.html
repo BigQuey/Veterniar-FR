@@ -10,70 +10,42 @@
         <h1 class="text-2xl font-bold text-slate-800">Programar Nueva Cita</h1>
     </div>
 
+    <div *ngIf="error"
+        class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm font-medium">
+        {{ error }}
+    </div>
+
     <form (ngSubmit)="guardar()" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Fecha y hora -->
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Fecha</label>
                 <input type="date" name="fecha" [(ngModel)]="cita.fecha" required
                     class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
             </div>
-            <!-- Fin fecha y hora -->
 
-            <!-- Hora -->
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Hora</label>
                 <input type="time" name="hora" [(ngModel)]="cita.hora" required
                     class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
             </div>
-            <!-- Fin hora -->
 
-            <!-- Mascota -->
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Mascota</label>
-
-                <select name="mascota" [(ngModel)]="cita.mascota!.id" (change)="onMascotaChange()" required
+                <select name="mascota" [(ngModel)]="cita.mascotaId" required
                     class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
                     <option [ngValue]="undefined" disabled>Selecciona una mascota</option>
-                    <option *ngFor="let m of mascotas" [value]="m.id">{{ m.nombre }}</option>
-                </select>
-            </div>
-            <!-- Fin mascota -->
-
-            <!-- Dueño -->
-            <div class="space-y-2">
-                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Dueño</label>
-                <select name="dueno" [(ngModel)]="cita.dueno!.id" required
-                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
-                    <option [ngValue]="undefined" disabled>Selecciona un dueño</option>
-                    <option *ngFor="let d of duenos" [value]="d.id">{{ d.nombre }}</option>
+                    <option *ngFor="let m of mascotas" [ngValue]="m.id">{{ m.nombre }}</option>
                 </select>
             </div>
 
-            <!-- Fin dueño -->
-
-            <!-- Veterinario -->
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Veterinario</label>
-                <select name="veterinario" [(ngModel)]="cita.veterinario!.id" required
+                <select name="veterinario" [(ngModel)]="cita.veterinarioId" required
                     class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
                     <option [ngValue]="undefined" disabled>Selecciona un veterinario</option>
-                    <option *ngFor="let v of veterinarios" [value]="v.id">{{ v.username }}</option>
+                    <option *ngFor="let v of veterinarios" [ngValue]="v.id">{{ v.username }}</option>
                 </select>
             </div>
-            <!-- Fin veterinario -->
-
-            <!-- Estado -->
-            <div class="space-y-2">
-                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Estado</label>
-                <select name="estado" [(ngModel)]="cita.estado"
-                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
-                    <option value="PROGRAMADA">Programada</option>
-                    <option value="COMPLETADA">Completada</option>
-                    <option value="CANCELADA">Cancelada</option>
-                </select>
-            </div>
-            <!-- Fin estado -->
         </div>
 
         <div class="space-y-2">
@@ -83,13 +55,13 @@
                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none"></textarea>
         </div>
 
-        <div class="flex justify-end pt-6 border-t border-slate-100 gap-4">
+        <div class="flex flex-col-reverse sm:flex-row sm:justify-end pt-6 border-t border-slate-100 gap-3">
             <a routerLink="/dashboard/cita"
-                class="px-8 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold transition-all">
+                class="px-8 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold transition-all w-full sm:w-auto text-center">
                 Cancelar
             </a>
             <button type="submit"
-                class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/20">
+                class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-600/20 w-full sm:w-auto">
                 Guardar Cita
             </button>
         </div>

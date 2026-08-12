@@ -42,8 +42,7 @@ export class EditarMedicamentoComponent implements OnInit {
     }
 
     actualizar(): void {
-        const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.medicamentoService.update(id, this.medicamento).subscribe({
+        this.medicamentoService.update(this.medicamento).subscribe({
             next: () => {
                 this.router.navigate(['/dashboard/medicamento']);
             },

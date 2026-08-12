@@ -15,6 +15,15 @@ export class MascotaComponent {
   mascota: Mascota[] = [];
   mensajeExito: string = '';
   constructor(private mascotaService: MascotaService) {}
+
+  get esAdmin(): boolean {
+    return localStorage.getItem('rol') === 'ADMIN';
+  }
+
+  get puedeGestionar(): boolean {
+    const rol = localStorage.getItem('rol');
+    return rol === 'ADMIN' || rol === 'EMPLEADO';
+  }
   ngOnInit(): void {
     this.obtenerMascotas();
   }

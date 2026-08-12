@@ -14,6 +14,10 @@ export class DuenoComponent {
     duenos: Dueno[] = [];
     mensajeExito: string = '';
     constructor(private duenoService: DuenoService) { }
+
+  get esAdmin(): boolean {
+    return localStorage.getItem('rol') === 'ADMIN';
+  }
     ngOnInit(): void {
         this.obtenerDuenos();
     }

@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Factura } from '../models/factura.model';
+import { Factura, FacturaRequest } from '../models/factura.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturaService {
 
-  private apiUrl = 'http://localhost:8080/api/factura';
+  private apiUrl = `${environment.apiUrl}/factura`;
 
   constructor(private http: HttpClient) { }
 
@@ -19,11 +20,11 @@ export class FacturaService {
     return this.http.get<Factura>(`${this.apiUrl}/${id}`);
   }
 
-  create(factura: Factura) {
+  create(factura: FacturaRequest) {
     return this.http.post<Factura>(this.apiUrl, factura);
   }
 
-  update(id: number, factura: Factura) {
+  update(factura: FacturaRequest) {
     return this.http.put<Factura>(this.apiUrl, factura);
   }
 
@@ -31,7 +32,7 @@ export class FacturaService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  updateEstado(id: number, factura: Factura) {
-    return this.http.put<Factura>(`${this.apiUrl}/${id}/estado`, factura.estadoPago);
+  cambiarEstado(id: number, estado: 'PAGADO' | 'PENDIENTE') {
+    return this.http.put<Factura>(`${this.apiUrl}/${id}/estado`, null, { params: { estado } });
   }
 }

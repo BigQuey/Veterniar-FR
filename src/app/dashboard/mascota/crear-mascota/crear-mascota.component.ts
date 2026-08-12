@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { Mascota } from '../../../models/mascota.models';
+import { Mascota, MascotaRequest } from '../../../models/mascota.models';
 import { MascotaService } from '../../../services/mascota.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Dueno } from '../../../models/dueno.model';
 import { DuenoService } from '../../../services/dueno.service';
+import { extraerMensajeError } from '../../../utils/error.util';
 
 @Component({
   selector: 'app-crear-mascota',
@@ -26,6 +27,7 @@ export class CrearMascotaComponent {
     dueno: { id: undefined }
   };
   duenos: Dueno[] = [];
+  error = '';
   constructor(private mascotaService: MascotaService, private router: Router, private duenoService: DuenoService) { }
   ngOnInit() {
     this.duenoService.getAll().subscribe((data: any) => {
@@ -33,9 +35,31 @@ export class CrearMascotaComponent {
     });
   }
   guardar() {
+    if (this.mascota.peso === undefined || this.mascota.peso === null || this.mascota.dueno?.id === undefined) {
+      this.error = 'El peso y el dueño son obligatorios';
+      return;
+    }
 
-    this.mascotaService.create(this.mascota).subscribe(() => {
-      this.router.navigate(['/dashboard/mascota']);
+    const request: MascotaRequest = {
+      id: this.mascota.id,
+      nombre: this.mascota.nombre!,
+      especie: this.mascota.especie!,
+      raza: this.mascota.raza,
+      fechaNacimiento: this.mascota.fechaNacimiento,
+      peso: this.mascota.peso,
+      sexo: this.mascota.sexo,
+      color: this.mascota.color,
+      caracteristicas: this.mascota.caracteristicas,
+      duenoId: this.mascota.dueno!.id
+    };
+
+    this.mascotaService.create(request).subscribe({
+      next: () => {
+        this.router.navigate(['/dashboard/mascota']);
+      },
+      error: (err) => {
+        this.error = extraerMensajeError(err, 'No se pudo crear la mascota');
+      }
     });
   }
 }

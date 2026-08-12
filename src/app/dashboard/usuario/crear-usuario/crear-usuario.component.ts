@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
   styleUrl: './crear-usuario.component.css',
 })
 export class CrearUsuarioComponent {
-  usuario: Usuario = { username: '', password: '', rol: '' };
+  usuario: Usuario = { username: '', password: '', rol: undefined };
+  error = '';
   constructor(private usuarioService: UsuarioService, private router: Router) {}
 
   ngOnInit() {
@@ -20,9 +21,22 @@ export class CrearUsuarioComponent {
   }
 
   guardar() {
-    this.usuarioService.create(this.usuario).subscribe(() => {
+    this.error = '';
+    if (!this.usuario.username || !this.usuario.password) {
+      this.error = 'El username y la contraseña son obligatorios';
+      return;
+    }
+    if (!this.usuario.rol) {
+      this.error = 'Selecciona un rol para el usuario';
+      return;
+    }
+    this.usuarioService.create(this.usuario).subscribe({
+      next: () => {
         this.router.navigate(['/dashboard/usuario']);
+      },
+      error: (err) => {
+        this.error = err?.error?.message || 'No se pudo crear el usuario';
       }
-    );
+    });
   }
 }

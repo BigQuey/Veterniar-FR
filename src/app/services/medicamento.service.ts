@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Medicamento } from '../models/medicamento.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class MedicamentoService {
-    private apiUrl = 'http://localhost:8080/api/medicamento';
+    private apiUrl = `${environment.apiUrl}/medicamento`;
     constructor(private http: HttpClient) { }
 
     getAll() {
@@ -17,12 +18,16 @@ export class MedicamentoService {
         return this.http.get<Medicamento>(`${this.apiUrl}/${id}`);
     }
 
+    buscarPorNombre(nombre: string) {
+        return this.http.get<Medicamento[]>(`${this.apiUrl}/buscar`, { params: { nombre } });
+    }
+
     create(medicamento: Medicamento) {
         return this.http.post<Medicamento>(this.apiUrl, medicamento);
     }
 
-    update(id: number, medicamento: Medicamento) {
-        return this.http.put<Medicamento>(`${this.apiUrl}/${id}`, medicamento);
+    update(medicamento: Medicamento) {
+        return this.http.put<Medicamento>(this.apiUrl, medicamento);
     }
 
     delete(id: number) {

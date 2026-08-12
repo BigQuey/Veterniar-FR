@@ -1,158 +1,186 @@
 <div class="max-w-5xl mx-auto space-y-6">
-  <!-- Header Section -->
-  <div class="flex items-center gap-4">
-    <a routerLink="/dashboard/factura"
-      class="p-2 text-slate-400 hover:text-emerald-600 transition-colors bg-white rounded-xl border border-slate-200 shadow-sm group">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
-        class="w-5 h-5 group-hover:-translate-x-1 transition-transform">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-      </svg>
-    </a>
-    <div>
-      <h1 class="text-2xl font-bold text-slate-800">Nueva Factura</h1>
-      <p class="text-sm text-slate-400 font-medium tracking-wide">Crea un comprobante para los servicios prestados</p>
-    </div>
-  </div>
-
-  <!-- Main Invoice Card -->
-  <form (ngSubmit)="guardarFactura()" class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-    <div class="p-8 md:p-12 space-y-10">
-
-      <!-- Section: Invoice Header Info -->
-      <div class="space-y-6">
-        <div class="flex items-center gap-3">
-          <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
-          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Detalles de Facturación</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="space-y-2">
-            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Fecha de Emisión</label>
-            <input type="date" name="fecha" [(ngModel)]="factura.fecha" required
-              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
-          </div>
-          <div class="space-y-2 lg:col-span-2">
-            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Cliente (Dueño)</label>
-            <select name="dueno" [(ngModel)]="factura.dueno" required
-              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
-              <option [ngValue]="undefined" disabled>Selecciona un cliente</option>
-              <option *ngFor="let d of duenosDisponibles" [ngValue]="d">{{ d.nombre }}</option>
-            </select>
-          </div>
-          <div class="space-y-2">
-            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Método de Pago</label>
-            <select name="metodoPago" [(ngModel)]="factura.metodoPago"
-              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
-              <option value="EFECTIVO">Efectivo 💵</option>
-              <option value="TARJETA">Tarjeta 💳</option>
-              <option value="TRANSFERENCIA">Transferencia 🏦</option>
-            </select>
-          </div>
-          <div class="space-y-2">
-            <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Estado</label>
-            <select name="estadoPago" [(ngModel)]="factura.estadoPago"
-              class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
-              <option value="PENDIENTE">Pendiente</option>
-              <option value="PAGADO">Pagado</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section: Line Items -->
-      <div class="space-y-6">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-3">
-            <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
-            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Servicios y Productos</h2>
-          </div>
-          <button type="button" (click)="agregarDetalle()"
-            class="px-4 py-2 bg-slate-50 hover:bg-emerald-50 text-emerald-600 rounded-xl text-xs font-bold border border-emerald-100 transition-all flex items-center gap-2">
+    <!-- Header -->
+    <div class="flex items-center gap-4">
+        <a routerLink="/dashboard/factura"
+            class="p-2 text-slate-400 hover:text-emerald-600 transition-colors bg-white rounded-xl border border-slate-200 shadow-sm group">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-              stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                stroke="currentColor" class="w-5 h-5 group-hover:-translate-x-1 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
-            Agregar Ítem
-          </button>
+        </a>
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">Nueva Factura</h1>
+            <p class="text-sm text-slate-400 font-medium tracking-wide">Crea un comprobante en dos pasos</p>
         </div>
+    </div>
 
-        <!-- Items Table -->
-        <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-          <table class="w-full border-collapse">
-            <thead>
-              <tr class="bg-slate-50 border-b border-slate-100">
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Servicio
-                </th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center w-32">
-                  Cantidad</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center w-40">
-                  Subtotal</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right w-20">
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-50">
-              <tr *ngFor="let d of factura.detalles; let i = index" class="hover:bg-slate-50/30 transition-colors">
-                <td class="px-6 py-4">
-                  <select name="servicio-{{ i }}" [(ngModel)]="d.servicio" (change)="calcularSubtotal(i)" required
-                    class="w-full px-4 py-2 bg-white border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-xs font-medium appearance-none">
-                    <option [ngValue]="null" disabled>Selecciona un servicio</option>
-                    <option *ngFor="let s of serviciosDisponibles" [ngValue]="s">{{ s.nombre }} — ${{ s.precio |
-                      number:'1.2-2' }}</option>
-                  </select>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="flex items-center justify-center">
-                    <input type="number" name="cantidad-{{ i }}" [(ngModel)]="d.cantidad" (input)="calcularSubtotal(i)"
-                      min="1"
-                      class="w-20 px-3 py-2 bg-white border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-xs font-bold text-center">
-                  </div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm font-bold text-slate-700 text-center">${{ d.subtotal | number:'1.2-2' }}</div>
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <button type="button" (click)="eliminarDetalle(i)"
-                    class="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                      stroke="currentColor" class="w-4 h-4">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-              <tr *ngIf="factura.detalles.length === 0">
-                <td colspan="4" class="px-6 py-12 text-center text-slate-400 text-xs font-medium italic">
-                  No hay servicios agregados. Haz clic en "Agregar Ítem" para comenzar.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div *ngIf="error"
+        class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm font-medium">
+        {{ error }}
+    </div>
 
-        <!-- Totals Section -->
-        <div class="flex justify-end pt-4">
-          <div class="w-full md:w-64 bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-2">
-            <div class="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-widest">
-              <span>Total a Pagar</span>
+    <form (ngSubmit)="guardarFactura()" class="space-y-6">
+        <!-- Paso 1: Datos de la factura -->
+        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-8 md:p-10 space-y-8">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-black">
+                        1</div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Datos de la factura</h2>
+                        <p class="text-xs text-slate-400">Cliente, fecha y condiciones de pago</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Cliente
+                            (Dueño)</label>
+                        <select name="dueno" [(ngModel)]="factura.dueno" required
+                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
+                            <option [ngValue]="undefined" disabled>Selecciona un cliente</option>
+                            <option *ngFor="let d of duenosDisponibles" [ngValue]="d">{{ d.nombre }}</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Fecha de
+                            Emisión</label>
+                        <input type="date" name="fecha" [(ngModel)]="factura.fecha" required
+                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Método de
+                            Pago</label>
+                        <select name="metodoPago" [(ngModel)]="factura.metodoPago"
+                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
+                            <option value="EFECTIVO">Efectivo 💵</option>
+                            <option value="TARJETA">Tarjeta 💳</option>
+                            <option value="TRANSFERENCIA">Transferencia 🏦</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Estado del
+                            Pago</label>
+                        <select name="estadoPago" [(ngModel)]="factura.estadoPago"
+                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all outline-none text-slate-700 font-medium appearance-none">
+                            <option value="PAGADO">Pagado ✅</option>
+                            <option value="PENDIENTE">Pendiente ⏳</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="text-3xl font-extrabold text-emerald-600">${{ factura.total | number:'1.2-2' }}</div>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Form Footer -->
-    <div class="p-8 bg-slate-50 border-t border-slate-100 flex justify-end gap-4">
-      <a routerLink="/dashboard/factura"
-        class="px-8 py-3.5 bg-white hover:bg-slate-100 text-slate-600 rounded-2xl font-bold transition-all border border-slate-200">
-        Cancelar
-      </a>
-      <button type="submit" [disabled]="factura.detalles.length === 0"
-        class="px-10 py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-600/20 active:scale-95">
-        Generar Factura
-      </button>
-    </div>
-  </form>
+        <!-- Paso 2: Servicios -->
+        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-8 md:p-10 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-black">
+                        2</div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Agrega los servicios</h2>
+                        <p class="text-xs text-slate-400">Haz clic en un servicio para añadirlo a la factura</p>
+                    </div>
+                </div>
+
+                <!-- Catálogo de servicios -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div *ngFor="let s of serviciosDisponibles"
+                        class="flex items-center justify-between gap-3 p-4 bg-slate-50/60 border border-slate-100 rounded-2xl transition-all hover:border-emerald-200 hover:bg-emerald-50/40">
+                        <div class="min-w-0">
+                            <div class="text-sm font-bold text-slate-700 truncate">{{ s.nombre }}</div>
+                            <div class="text-xs text-slate-400 font-medium">S/ {{ s.precio | number:'1.2-2' }}</div>
+                        </div>
+                        <button type="button" (click)="agregarServicio(s)" [disabled]="estaAgregado(s)"
+                            [class]="estaAgregado(s)
+                                ? 'inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white opacity-80 cursor-not-allowed'
+                                : 'inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-sm shadow-emerald-600/20 active:scale-95'">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                                stroke="currentColor" class="w-3.5 h-3.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                            {{ estaAgregado(s) ? 'Agregado' : 'Agregar' }}
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="serviciosDisponibles.length === 0"
+                    class="p-8 text-center text-slate-400 text-sm font-medium bg-slate-50 rounded-2xl">
+                    No hay servicios disponibles en el catálogo.
+                </div>
+
+                <!-- Servicios seleccionados -->
+                <div *ngIf="factura.detalles.length > 0" class="border border-slate-100 rounded-2xl overflow-hidden">
+                    <div
+                        class="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between gap-2">
+                        <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Servicios en la
+                            factura</span>
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg">{{
+                            factura.detalles.length }} ítem(s)</span>
+                    </div>
+                    <div class="divide-y divide-slate-50">
+                        <div *ngFor="let d of factura.detalles; let i = index"
+                            class="px-6 py-4 flex flex-wrap items-center gap-4">
+                            <div class="flex-1 min-w-[140px]">
+                                <div class="text-sm font-bold text-slate-700">{{ d.servicio.nombre }}</div>
+                                <div class="text-xs text-slate-400 font-medium">S/ {{ d.servicio.precio |
+                                    number:'1.2-2' }} c/u</div>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <button type="button" (click)="decrementar(i)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold transition-colors">
+                                    −
+                                </button>
+                                <input type="number" name="cant-{{ i }}" [(ngModel)]="d.cantidad"
+                                    (input)="calcularTotal()" min="1"
+                                    class="w-14 px-2 py-1.5 bg-white border border-slate-200 rounded-lg text-center text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                                <button type="button" (click)="incrementar(i)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold transition-colors">
+                                    +
+                                </button>
+                            </div>
+
+                            <div class="w-24 text-right">
+                                <div class="text-sm font-black text-slate-700">S/ {{ subtotalDetalle(d) |
+                                    number:'1.2-2' }}</div>
+                            </div>
+
+                            <button type="button" (click)="eliminarDetalle(i)" title="Quitar"
+                                class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen y acciones -->
+        <div
+            class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total de la factura</div>
+                <div class="text-4xl font-extrabold text-emerald-600">S/ {{ factura.total | number:'1.2-2' }}</div>
+            </div>
+            <div class="flex flex-col-reverse sm:flex-row w-full sm:w-auto gap-3">
+                <a routerLink="/dashboard/factura"
+                    class="px-8 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl font-bold transition-all text-center">
+                    Cancelar
+                </a>
+                <button type="submit" [disabled]="guardando || factura.detalles.length === 0"
+                    class="px-10 py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-600/20 active:scale-95">
+                    {{ guardando ? 'Generando...' : 'Generar Factura' }}
+                </button>
+            </div>
+        </div>
+    </form>
 </div>

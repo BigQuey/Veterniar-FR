@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
+import { extraerMensajeError } from '../../utils/error.util';
 
 @Component({
   selector: 'app-usuario',
@@ -13,6 +14,7 @@ import { UsuarioService } from '../../services/usuario.service';
 export class UsuarioComponent {
   usuario: Usuario[] = [];
   mensajeExito: string = '';
+  error: string = '';
   constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
@@ -20,24 +22,12 @@ export class UsuarioComponent {
   }
   obtenerUsuarios() {
     this.usuarioService.getAll().subscribe({
-      next: (usuarios: any) => {
+      next: (usuarios: Usuario[]) => {
         this.usuario = usuarios;
       },
       error: (error) => {
-        console.log(error);
+        this.error = extraerMensajeError(error, 'No se pudieron cargar los usuarios');
       },
     });
   }
-  eliminar(id: number| undefined) {
-    if (confirm('¿Seguro que deseas eliminar este usuario?')) {
-      this.usuarioService.delete(id).subscribe(() => {
-        this.obtenerUsuarios();
-        this.mensajeExito = 'Usuario eliminado correctamente.';
-        setTimeout(() => {
-          this.mensajeExito = '';
-        }, 1500);
-      });
-    }
-  }
-  
 }

@@ -2,5 +2,7 @@ export interface Usuario {
     id?: number;
     username?: string;
     password?: string;
-    rol?: string;
+    rol?: 'ADMIN' | 'EMPLEADO' | 'VETERINARIO';
 }
+
+export type RolUsuario = 'ADMIN' | 'EMPLEADO' | 'VETERINARIO';

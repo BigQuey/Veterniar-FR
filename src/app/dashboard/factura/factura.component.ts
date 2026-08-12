@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Factura } from '../../models/factura.model';
 import { FacturaService } from '../../services/factura.service';
 import { FormsModule } from '@angular/forms';
+import { extraerMensajeError } from '../../utils/error.util';
 
 @Component({
   selector: 'app-factura',
@@ -15,6 +16,7 @@ export class FacturaComponent {
   facturasOriginal: Factura[] = [];
   facturas: Factura[] = [];
   mensajeExito: string = '';
+  error: string = '';
   // Para la búsqueda
   term: string = '';
   constructor(private facturaService: FacturaService) { }
@@ -25,10 +27,13 @@ export class FacturaComponent {
 
   obtenerFacturas() {
     this.facturaService.getAll().subscribe({
-      next: (data: any) => {
+      next: (data: Factura[]) => {
         this.facturas = data;
+        this.facturasOriginal = data;
       },
-      error: (error) => console.log(error)
+      error: (error) => {
+        this.error = extraerMensajeError(error, 'No se pudieron cargar las facturas');
+      }
     });
   }
 
@@ -60,7 +65,7 @@ export class FacturaComponent {
           setTimeout(() => (this.mensajeExito = ''), 1500);
         },
         error: (error) => {
-          console.error('Error al eliminar la factura:', error);
+          this.error = extraerMensajeError(error, 'No se pudo eliminar la factura');
         },
       });
     }
@@ -75,8 +80,6 @@ export class FacturaComponent {
       f.id?.toString().includes(this.term) ||
       f.dueno?.nombre?.toLowerCase().includes(lower)
     );
-
-    console.log('Resultados de la búsqueda:', this.facturas);
   }
 
   actualizarEstado(factura: Factura): void {
@@ -84,16 +87,15 @@ export class FacturaComponent {
 
     if (confirm('¿Quieres actualizar el estado de pago?')) {
       const nuevoEstado: 'PAGADO' | 'PENDIENTE' = factura.estadoPago === 'PAGADO' ? 'PENDIENTE' : 'PAGADO';
-      const facturaActualizada: Factura = { ...factura, estadoPago: nuevoEstado };
 
-      this.facturaService.update(factura.id, facturaActualizada).subscribe({
+      this.facturaService.cambiarEstado(factura.id, nuevoEstado).subscribe({
         next: () => {
           this.obtenerFacturas();
           this.mensajeExito = `El estado se ha actualizado a ${nuevoEstado} correctamente.`;
           setTimeout(() => (this.mensajeExito = ''), 1500);
         },
         error: (error) => {
-          console.error('Error al actualizar el estado de la factura:', error);
+          this.error = extraerMensajeError(error, 'No se pudo actualizar el estado de la factura');
         },
       });
     }

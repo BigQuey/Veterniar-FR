@@ -1,11 +1,12 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Mascota } from '../../../models/mascota.models';
+import { Mascota, MascotaRequest } from '../../../models/mascota.models';
 import { MascotaService } from '../../../services/mascota.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DuenoService } from '../../../services/dueno.service';
 import { Dueno } from '../../../models/dueno.model';
+import { extraerMensajeError } from '../../../utils/error.util';
 
 @Component({
   selector: 'app-editar-mascota',
@@ -17,6 +18,7 @@ export class EditarMascotaComponent {
   mascota!: Mascota;
   duenos: Dueno[] = [];
   duenoNombre: string = '';
+  error = '';
   constructor(
     private mascotaService: MascotaService,
     private duenoService: DuenoService,
@@ -45,9 +47,31 @@ export class EditarMascotaComponent {
   }
 
   actualizar() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.mascotaService.update(id, this.mascota).subscribe(() => {
-      this.router.navigate(['/dashboard/mascota']);
+    if (this.mascota.peso === undefined || this.mascota.peso === null || this.mascota.dueno?.id === undefined) {
+      this.error = 'El peso y el dueño son obligatorios';
+      return;
+    }
+
+    const request: MascotaRequest = {
+      id: this.mascota.id,
+      nombre: this.mascota.nombre!,
+      especie: this.mascota.especie!,
+      raza: this.mascota.raza,
+      fechaNacimiento: this.mascota.fechaNacimiento,
+      peso: this.mascota.peso,
+      sexo: this.mascota.sexo,
+      color: this.mascota.color,
+      caracteristicas: this.mascota.caracteristicas,
+      duenoId: this.mascota.dueno!.id
+    };
+
+    this.mascotaService.update(request).subscribe({
+      next: () => {
+        this.router.navigate(['/dashboard/mascota']);
+      },
+      error: (err) => {
+        this.error = extraerMensajeError(err, 'No se pudo actualizar la mascota');
+      }
     });
   }
   volver(): void {

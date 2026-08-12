@@ -28,8 +28,7 @@ export class EditarDuenoComponent {
   }
 
   actualizar() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.duenoService.update(id, this.dueno).subscribe(() => {
+    this.duenoService.update(this.dueno).subscribe(() => {
       this.router.navigate(['/dashboard/dueno']);
     });
   }

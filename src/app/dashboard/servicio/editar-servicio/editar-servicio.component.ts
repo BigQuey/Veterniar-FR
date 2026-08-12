@@ -28,8 +28,7 @@ export class EditarServicioComponent {
   }
 
   actualizar() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.servicioService.update(id, this.servicio).subscribe(() => {
+    this.servicioService.update(this.servicio).subscribe(() => {
       this.router.navigate(['/dashboard/servicio']);
     });
   }

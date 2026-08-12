@@ -4,12 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CitaService } from '../../../services/cita.service';
 import { MascotaService } from '../../../services/mascota.service';
-import { DuenoService } from '../../../services/dueno.service';
 import { UsuarioService } from '../../../services/usuario.service';
-import { Cita } from '../../../models/cita.model';
+import { CitaRequest } from '../../../models/cita.model';
 import { Mascota } from '../../../models/mascota.models';
-import { Dueno } from '../../../models/dueno.model';
 import { Usuario } from '../../../models/usuario.model';
+import { extraerMensajeError } from '../../../utils/error.util';
 
 @Component({
     selector: 'app-crear-cita',
@@ -18,52 +17,48 @@ import { Usuario } from '../../../models/usuario.model';
     styleUrl: './crear-cita.component.css'
 })
 export class CrearCitaComponent implements OnInit {
-    cita: Cita = {
+    cita: CitaRequest = {
         fecha: '',
         hora: '',
-        mascota: { id: undefined },
-        dueno: { id: undefined },
-        veterinario: { id: undefined },
-        motivo: '',
-        estado: 'PROGRAMADA'
+        mascotaId: undefined as unknown as number,
+        veterinarioId: undefined as unknown as number,
+        motivo: ''
     };
 
     mascotas: Mascota[] = [];
-    duenos: Dueno[] = [];
     veterinarios: Usuario[] = [];
+    error = '';
 
     constructor(
         private citaService: CitaService,
         private mascotaService: MascotaService,
-        private duenoService: DuenoService,
         private usuarioService: UsuarioService,
         private router: Router
     ) { }
 
     ngOnInit(): void {
         this.mascotaService.getAll().subscribe((data: any) => this.mascotas = data);
-        this.duenoService.getAll().subscribe((data: any) => this.duenos = data);
         this.usuarioService.getAllVeterinarios().subscribe((data: any) => this.veterinarios = data);
-        setTimeout(() => {
-            console.log(this.mascotas);
-        }, 1000);
     }
 
     guardar(): void {
-        this.citaService.create(this.cita).subscribe(() => {
-            this.router.navigate(['/dashboard/cita']);
+        if (!this.cita.mascotaId || !this.cita.veterinarioId || !this.cita.fecha || !this.cita.hora) {
+            this.error = 'Por favor completa todos los campos obligatorios';
+            return;
+        }
+
+        const request: CitaRequest = {
+            ...this.cita,
+            hora: this.cita.hora.length === 5 ? `${this.cita.hora}:00` : this.cita.hora
+        };
+
+        this.citaService.create(request).subscribe({
+            next: () => {
+                this.router.navigate(['/dashboard/cita']);
+            },
+            error: (err) => {
+                this.error = extraerMensajeError(err, 'No se pudo programar la cita');
+            }
         });
     }
-    onMascotaChange(): void {
-        const idMascotaSeleccionada = this.cita.mascota?.id;
-
-        if (idMascotaSeleccionada) {
-            const mascotaEncontrada = this.mascotas.find(m => m.id == idMascotaSeleccionada);
-
-            if (mascotaEncontrada && mascotaEncontrada.dueno) {
-                this.cita.dueno!.id = mascotaEncontrada.dueno.id;
-            }
-        }
-    }
-
 }

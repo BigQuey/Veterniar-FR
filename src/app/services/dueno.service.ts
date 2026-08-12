@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Dueno } from '../models/dueno.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DuenoService {
-  private apiUrl = 'http://localhost:8080/api/dueno';
+  private apiUrl = `${environment.apiUrl}/dueno`;
 
   constructor(private http: HttpClient) { }
 
@@ -23,7 +24,7 @@ export class DuenoService {
     return this.http.post(this.apiUrl, dueno);
   }
 
-  update(id: number, dueno: Dueno) {
+  update(dueno: Dueno) {
     return this.http.put(`${this.apiUrl}`, dueno);
   }
 

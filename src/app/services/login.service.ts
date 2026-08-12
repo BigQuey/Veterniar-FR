@@ -1,15 +1,16 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
   private platformId = inject(PLATFORM_ID);
-  private loginUrl = 'http://localhost:8080/api/auth/login';
+  private loginUrl = `${environment.apiUrl}/auth/login`;
 
   constructor(private http: HttpClient) { }
 
